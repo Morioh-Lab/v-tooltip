@@ -234,8 +234,6 @@ var Tooltip = /*#__PURE__*/function () {
     this.events.forEach(function (evt) {
       _this.el.addEventListener(evt[0], evt[1]);
     });
-    console.log(this.el);
-    console.log(this.events);
   }
 
   _createClass(Tooltip, [{
@@ -271,38 +269,51 @@ var Tooltip = /*#__PURE__*/function () {
         this.created = true;
       }
 
-      clearTimeout(this.hideTimeout);
-      this.tl.innerText = o.title;
-      this.html(o.content); // container hover
+      clearTimeout(this.hideTimeout); // container hover
 
       if (this.showed) return;
       this.container.style.display = "block";
-      var v = this.viewport(this.el); //this.el.getBoundingClientRect();
+      this.tl.innerText = o.title;
+      this.html(o.content); // this.position();
 
-      var m = this.viewport(this.container); //this.container.getBoundingClientRect();
+      this.showed = true;
+    }
+  }, {
+    key: "position",
+    value: function position() {
+      var o = this.o; // var v = this.viewport(this.el); //this.el.getBoundingClientRect();
+      // var m = this.viewport(this.container);//this.container.getBoundingClientRect();
+      // var a = this.viewport(this.arrow); //this.arrow.getBoundingClientRect();
+      // Scroll offset of the current document
 
-      var a = this.viewport(this.arrow); //this.arrow.getBoundingClientRect();
+      var ot = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      var ol = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+      var v = this.el.getBoundingClientRect();
+      var m = this.container.getBoundingClientRect();
+      var a = this.arrow.getBoundingClientRect();
+      var t = v.top + ot;
+      var l = v.left + ol;
 
       switch (o.placement) {
         case 'left':
-          this.container.style.left = v.left - m.width - a.width - o.offset + 'px';
-          this.container.style.top = v.top + (v.height - m.height) / 2 + 'px';
+          this.container.style.left = l - m.width - a.width - o.offset + 'px';
+          this.container.style.top = t + (v.height - m.height) / 2 + 'px';
           this.arrow.style.top = (m.height - a.height) / 2 + 'px';
           this.removeClass(this.container, "fadeOutLeft");
           this.addClass(this.container, "fadeInLeft");
           break;
 
         case 'right':
-          this.container.style.left = v.left + v.width + a.width + o.offset + 'px';
-          this.container.style.top = v.top + (v.height - m.height) / 2 + 'px';
+          this.container.style.left = l + v.width + a.width + o.offset + 'px';
+          this.container.style.top = t + (v.height - m.height) / 2 + 'px';
           this.arrow.style.top = (m.height - a.height) / 2 + 'px';
           this.removeClass(this.container, "fadeOutRight");
           this.addClass(this.container, "fadeInRight");
           break;
 
         case 'bottom':
-          this.container.style.left = v.left + (v.width - m.width) / 2 + 'px';
-          this.container.style.top = v.top + m.height + o.offset + a.height + 'px';
+          this.container.style.left = l + (v.width - m.width) / 2 + 'px';
+          this.container.style.top = t + m.height + o.offset + a.height + 'px';
           this.arrow.style.left = (m.width - a.width) / 2 + 'px';
           this.removeClass(this.container, "fadeOutDown");
           this.addClass(this.container, "fadeInUp");
@@ -310,15 +321,13 @@ var Tooltip = /*#__PURE__*/function () {
 
         case 'top':
         default:
-          this.container.style.left = v.left + (v.width - m.width) / 2 + 'px';
-          this.container.style.top = v.top - m.height - o.offset - a.height + 'px';
+          this.container.style.left = l + (v.width - m.width) / 2 + 'px';
+          this.container.style.top = t - m.height - o.offset - a.height + 'px';
           this.arrow.style.left = (m.width - a.width) / 2 + 'px';
           this.removeClass(this.container, "fadeOutUp");
           this.addClass(this.container, "fadeInDown");
           break;
       }
-
-      this.showed = true;
     }
   }, {
     key: "html",
@@ -337,6 +346,7 @@ var Tooltip = /*#__PURE__*/function () {
         }
       } else {
         this.o.html ? this.body.innerHTML = content : this.body.innerText = content;
+        this.position();
       }
     }
   }, {

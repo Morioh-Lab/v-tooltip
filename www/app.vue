@@ -7,10 +7,8 @@
                 <h4>Tooltip directive for Vue.js</h4>
             </header>
 
-            <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block"
-                v-tooltip="{ when:'hover', placement: 'top', content: 'Html content'}">Top</button>
-            </div>
+
+            <h5>Hover</h5>
 
             <div class="form-group">
 
@@ -50,26 +48,34 @@
 
             <h5>Focus</h5>
 
-            <div class="form-group">
-                <input type="text" id="i-top" class="form-control"
-                    v-tooltip="{ when: 'focus', placement: 'top', content: 'Html content top'}">
-            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <input type="text" id="i-top" class="form-control"
+                            v-tooltip="{ when: 'focus', placement: 'top', content: 'Html content top'}">
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <input type="text" id="i-bottom" class="form-control"
-                    v-tooltip="{ when: 'focus', placement: 'bottom', content: 'Html content bottom'}">
-            </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <input type="text" id="i-bottom" class="form-control"
+                            v-tooltip="{ when: 'focus', placement: 'bottom', content: 'Html content bottom'}">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <input type="text" id="i-left" class="form-control"
+                            v-tooltip="{ when: 'focus', placement: 'left', content: 'Html content left'}">
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <input type="text" id="i-left" class="form-control"
-                    v-tooltip="{ when: 'focus', placement: 'left', content: 'Html content left'}">
+                <div class="col-3">
+                    <div class="form-group">
+                        <input type="text" id="i-right" class="form-control"
+                            v-tooltip="{ when: 'focus', placement: 'right', content: 'Html content right'}">
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <input type="text" id="i-right" class="form-control"
-                    v-tooltip="{ when: 'focus', placement: 'right', content: 'Html content right'}">
-            </div>
-
 
 
 
@@ -79,14 +85,14 @@
         <footer>
 
             <p>
-                <a class="social-icon" href="https://github.com/nasa8x/v-tooltip" target="_blank">
+                <a class="social-icon" href="https://github.com/Morioh-Lab/v-tooltip" target="_blank">
                     <i class="fa-3x fab fa-github-square"></i>
                 </a>
 
             </p>
 
             <p>Themed by <a href="http://on.morioh.net/96d5d36367" target="_blank">Morioh Theme</a><br>
-                Made Love by <a href="https://morioh.com/@5c22e47440738156a7078a19">Nasa8x</a>
+                Made Love by <a href="https://morioh.com">Morioh</a>
 
             </p>
 

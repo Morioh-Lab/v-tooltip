@@ -535,8 +535,6 @@
             this.events.forEach(function (evt) {
               _this.el.addEventListener(evt[0], evt[1]);
             });
-            console.log(this.el);
-            console.log(this.events);
           }
 
           _createClass(Tooltip, [{
@@ -572,38 +570,51 @@
                 this.created = true;
               }
 
-              clearTimeout(this.hideTimeout);
-              this.tl.innerText = o.title;
-              this.html(o.content); // container hover
+              clearTimeout(this.hideTimeout); // container hover
 
               if (this.showed) return;
               this.container.style.display = "block";
-              var v = this.viewport(this.el); //this.el.getBoundingClientRect();
+              this.tl.innerText = o.title;
+              this.html(o.content); // this.position();
 
-              var m = this.viewport(this.container); //this.container.getBoundingClientRect();
+              this.showed = true;
+            }
+          }, {
+            key: "position",
+            value: function position() {
+              var o = this.o; // var v = this.viewport(this.el); //this.el.getBoundingClientRect();
+              // var m = this.viewport(this.container);//this.container.getBoundingClientRect();
+              // var a = this.viewport(this.arrow); //this.arrow.getBoundingClientRect();
+              // Scroll offset of the current document
 
-              var a = this.viewport(this.arrow); //this.arrow.getBoundingClientRect();
+              var ot = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+              var ol = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+              var v = this.el.getBoundingClientRect();
+              var m = this.container.getBoundingClientRect();
+              var a = this.arrow.getBoundingClientRect();
+              var t = v.top + ot;
+              var l = v.left + ol;
 
               switch (o.placement) {
                 case 'left':
-                  this.container.style.left = v.left - m.width - a.width - o.offset + 'px';
-                  this.container.style.top = v.top + (v.height - m.height) / 2 + 'px';
+                  this.container.style.left = l - m.width - a.width - o.offset + 'px';
+                  this.container.style.top = t + (v.height - m.height) / 2 + 'px';
                   this.arrow.style.top = (m.height - a.height) / 2 + 'px';
                   this.removeClass(this.container, "fadeOutLeft");
                   this.addClass(this.container, "fadeInLeft");
                   break;
 
                 case 'right':
-                  this.container.style.left = v.left + v.width + a.width + o.offset + 'px';
-                  this.container.style.top = v.top + (v.height - m.height) / 2 + 'px';
+                  this.container.style.left = l + v.width + a.width + o.offset + 'px';
+                  this.container.style.top = t + (v.height - m.height) / 2 + 'px';
                   this.arrow.style.top = (m.height - a.height) / 2 + 'px';
                   this.removeClass(this.container, "fadeOutRight");
                   this.addClass(this.container, "fadeInRight");
                   break;
 
                 case 'bottom':
-                  this.container.style.left = v.left + (v.width - m.width) / 2 + 'px';
-                  this.container.style.top = v.top + m.height + o.offset + a.height + 'px';
+                  this.container.style.left = l + (v.width - m.width) / 2 + 'px';
+                  this.container.style.top = t + m.height + o.offset + a.height + 'px';
                   this.arrow.style.left = (m.width - a.width) / 2 + 'px';
                   this.removeClass(this.container, "fadeOutDown");
                   this.addClass(this.container, "fadeInUp");
@@ -611,15 +622,13 @@
 
                 case 'top':
                 default:
-                  this.container.style.left = v.left + (v.width - m.width) / 2 + 'px';
-                  this.container.style.top = v.top - m.height - o.offset - a.height + 'px';
+                  this.container.style.left = l + (v.width - m.width) / 2 + 'px';
+                  this.container.style.top = t - m.height - o.offset - a.height + 'px';
                   this.arrow.style.left = (m.width - a.width) / 2 + 'px';
                   this.removeClass(this.container, "fadeOutUp");
                   this.addClass(this.container, "fadeInDown");
                   break;
               }
-
-              this.showed = true;
             }
           }, {
             key: "html",
@@ -638,6 +647,7 @@
                 }
               } else {
                 this.o.html ? this.body.innerHTML = content : this.body.innerText = content;
+                this.position();
               }
             }
           }, {
@@ -874,6 +884,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -925,29 +941,7 @@ var render = function() {
     _c("div", { staticClass: "container" }, [
       _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "tooltip",
-                rawName: "v-tooltip",
-                value: {
-                  when: "hover",
-                  placement: "top",
-                  content: "Html content"
-                },
-                expression:
-                  "{ when:'hover', placement: 'top', content: 'Html content'}"
-              }
-            ],
-            staticClass: "btn btn-primary btn-block",
-            attrs: { type: "button" }
-          },
-          [_vm._v("Top")]
-        )
-      ]),
+      _c("h5", [_vm._v("Hover")]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c(
@@ -1133,84 +1127,94 @@ var render = function() {
       _vm._v(" "),
       _c("h5", [_vm._v("Focus")]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "tooltip",
-              rawName: "v-tooltip",
-              value: {
-                when: "focus",
-                placement: "top",
-                content: "Html content top"
-              },
-              expression:
-                "{ when: 'focus', placement: 'top', content: 'Html content top'}"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", id: "i-top" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "tooltip",
-              rawName: "v-tooltip",
-              value: {
-                when: "focus",
-                placement: "bottom",
-                content: "Html content bottom"
-              },
-              expression:
-                "{ when: 'focus', placement: 'bottom', content: 'Html content bottom'}"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", id: "i-bottom" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "tooltip",
-              rawName: "v-tooltip",
-              value: {
-                when: "focus",
-                placement: "left",
-                content: "Html content left"
-              },
-              expression:
-                "{ when: 'focus', placement: 'left', content: 'Html content left'}"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", id: "i-left" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "tooltip",
-              rawName: "v-tooltip",
-              value: {
-                when: "focus",
-                placement: "right",
-                content: "Html content right"
-              },
-              expression:
-                "{ when: 'focus', placement: 'right', content: 'Html content right'}"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", id: "i-right" }
-        })
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-3" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "tooltip",
+                  rawName: "v-tooltip",
+                  value: {
+                    when: "focus",
+                    placement: "top",
+                    content: "Html content top"
+                  },
+                  expression:
+                    "{ when: 'focus', placement: 'top', content: 'Html content top'}"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "i-top" }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-3" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "tooltip",
+                  rawName: "v-tooltip",
+                  value: {
+                    when: "focus",
+                    placement: "bottom",
+                    content: "Html content bottom"
+                  },
+                  expression:
+                    "{ when: 'focus', placement: 'bottom', content: 'Html content bottom'}"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "i-bottom" }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-3" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "tooltip",
+                  rawName: "v-tooltip",
+                  value: {
+                    when: "focus",
+                    placement: "left",
+                    content: "Html content left"
+                  },
+                  expression:
+                    "{ when: 'focus', placement: 'left', content: 'Html content left'}"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "i-left" }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-3" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "tooltip",
+                  rawName: "v-tooltip",
+                  value: {
+                    when: "focus",
+                    placement: "right",
+                    content: "Html content right"
+                  },
+                  expression:
+                    "{ when: 'focus', placement: 'right', content: 'Html content right'}"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "i-right" }
+            })
+          ])
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -1239,7 +1243,7 @@ var staticRenderFns = [
           {
             staticClass: "social-icon",
             attrs: {
-              href: "https://github.com/nasa8x/v-tooltip",
+              href: "https://github.com/Morioh-Lab/v-tooltip",
               target: "_blank"
             }
           },
@@ -1258,11 +1262,7 @@ var staticRenderFns = [
         ),
         _c("br"),
         _vm._v("\n            Made Love by "),
-        _c(
-          "a",
-          { attrs: { href: "https://morioh.com/@5c22e47440738156a7078a19" } },
-          [_vm._v("Nasa8x")]
-        )
+        _c("a", { attrs: { href: "https://morioh.com" } }, [_vm._v("Morioh")])
       ])
     ])
   }

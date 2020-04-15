@@ -1,7 +1,7 @@
 {
   "name": "@morioh/v-tooltip",
   "description": "Tooltip directive for Vue.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Morioh-Lab",
   "main": "./dist/v-tooltip.js",
   "scripts": {
